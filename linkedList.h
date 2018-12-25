@@ -9,46 +9,48 @@
 
 using namespace std;
 
+
 template<typename T> class CLinkedList
 {
-private:
+public:
     CLinkedList* next;
-    CLinkedList* head;
     T value;
 public:
     CLinkedList() {}
     ~CLinkedList() {}
-    CLinkedList(const T &v, CLinkedList* n) : value(v), next(nullptr), head(n)
+    CLinkedList(const T &v) : value(v), next(nullptr)
     {
-        if (head == nullptr)
-        {
-            head = this;
-        }
     }
 
     T getValue() { return value; }
-    
-    CLinkedList* AddNode(const T& value, CLinkedList* prev)
+
+    void PushNode(CLinkedList** head, const T& value)
     {
-        CLinkedList* node = new CLinkedList(value, head);
-        if (head == nullptr) {
-            head = node;
-        }
-        else
-        {
-            prev->next = node;
-        }
-        return node;
+        CLinkedList* new_node = new CLinkedList(value);
+        new_node->next = *head;
+        *head = new_node;
+        return;
     }
 
-    void reverse()
+    void PushBackNode(CLinkedList* head, const T& value)
+    {
+        CLinkedList* new_node = new CLinkedList(value);
+        CLinkedList* temp = head;
+        while (temp->next)
+            temp = temp->next;
+            
+            temp->next = new_node;
+        return; 
+    }
+
+    void Reverse(CLinkedList **head)
     {
         // Initialize current, previous and
         // next pointers
-        CLinkedList *current = head;
-        CLinkedList *prev = NULL, *next = NULL;
+        CLinkedList *current = *head;
+        CLinkedList *prev = nullptr, *next = nullptr;
 
-        while (current != NULL)
+        while (current != nullptr)
         {
             // Store next
             next = current->next;
@@ -60,13 +62,13 @@ public:
             prev = current;
             current = next;
         }
-        head = prev;
+        *head = prev;
     }
     
-    void print()
+    void Print(CLinkedList *head)
     {
         CLinkedList *temp = head;
-        while (temp != NULL)
+        while (temp != nullptr)
         {
             cout << temp->value << " ";
             temp = temp->next;
@@ -74,4 +76,17 @@ public:
         cout << endl;
     }
 
+    void Clear(CLinkedList **head)
+    {
+        CLinkedList *temp = *head;
+        while (temp != nullptr)
+        {
+            CLinkedList *pe = temp;
+            temp = temp->next;
+            delete pe;
+            pe = nullptr;
+        }
+        *head = nullptr;
+    }
 };
+
