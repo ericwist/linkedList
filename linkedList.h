@@ -43,6 +43,56 @@ public:
         return; 
     }
 
+    void RemoveNode(CLinkedList **head, const T& value) {
+        CLinkedList *node = FindNode(*head, value);
+        if (node == nullptr) { return; }
+        // When node to be deleted is head node 
+        if (*head == node)
+        {
+            if ((*head)->next == nullptr)
+            {
+                cout << "There is only one node. Can't delete the list.\n";
+                //Clear();
+                return;
+            }
+
+            /* Copy the value of next node to head */
+            (*head)->value = (*head)->next->value;
+
+            // store address of next node 
+            node = (*head)->next;
+
+            // Remove the link of next node 
+            (*head)->next = (*head)->next->next;
+
+            // free memory 
+            delete node;
+            node = nullptr;
+
+            return;
+        }
+        // When not first node, follow the normal deletion process 
+        // find the previous node 
+        CLinkedList *prev = *head;
+        while (prev->next && prev->next != node)
+            prev = prev->next;
+
+        // Check if node really exists in Linked List 
+        if (prev->next == nullptr)
+        {
+            cout << "Given node is not present in Linked List\n";
+            return;
+        }
+
+        // Remove node from Linked List 
+        prev->next = prev->next->next;
+
+        // Free memory 
+        delete node;
+        node = nullptr;
+        return;
+    }
+
     void Reverse(CLinkedList **head)
     {
         // Initialize current, previous and
@@ -88,5 +138,21 @@ public:
         }
         *head = nullptr;
     }
+
+private:
+    CLinkedList *FindNode(CLinkedList *head, const T& value)
+    {
+        CLinkedList *temp = head;
+        while (temp != nullptr)
+        {
+            if (temp->value == value) {
+                return temp;
+            }
+            temp = temp->next;
+        }
+        return nullptr;
+    }
+
+
 };
 
