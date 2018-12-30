@@ -14,7 +14,6 @@ template<typename T> class CLinkedList
 public:
     CLinkedList *next;
     T value;
-public:
     CLinkedList() {}
     ~CLinkedList() {}
     CLinkedList(const T &v) : value(v), next(nullptr){}
