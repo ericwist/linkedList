@@ -48,7 +48,7 @@ public:
         return; 
     }
 
-    CLinkedList* GetNodeAtIndex(CLinkedList *head, int index)
+    CLinkedList *GetNodeAtIndex(CLinkedList *head, int index)
     {
         CLinkedList *temp = head;
         int count = 0;
@@ -61,6 +61,46 @@ public:
             temp = temp->next;
         }
         return temp;
+    }
+
+    void MoveFrontToBack(CLinkedList **head)
+    {
+        if ((*head) && (*head)->next)
+        {
+            CLinkedList* newHead = (*head)->next;
+            // Note: curr could be tail node
+            CLinkedList* curr = newHead; 
+
+            // Move to last node
+            while (curr->next)
+                curr = curr->next;
+
+            // Rotate front to after tail
+            (*head)->next = nullptr;
+            curr->next = (*head);
+
+            // Update head node
+            (*head) = newHead;
+        }
+
+    }
+
+    void MoveBackToFront(CLinkedList **head)
+    {
+        if (*head == nullptr || (*head)->next == nullptr)
+            return;
+
+        CLinkedList *secondToLast = nullptr;
+        CLinkedList *last = *head;
+
+        while (last->next)
+        {
+            secondToLast = last;
+            last = last->next;
+        }
+        secondToLast->next = nullptr;
+        last->next = *head;
+        *head = last;
     }
 
     void RemoveNode(CLinkedList **head, const T &value) {
