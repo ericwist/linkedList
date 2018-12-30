@@ -9,33 +9,39 @@
 
 using namespace std;
 
-
 template<typename T> class CLinkedList
 {
 public:
-    CLinkedList* next;
+    CLinkedList *next;
     T value;
 public:
     CLinkedList() {}
     ~CLinkedList() {}
-    CLinkedList(const T &v) : value(v), next(nullptr)
+    CLinkedList(const T &v) : value(v), next(nullptr){}
+
+    int GetListLength(CLinkedList *head)
     {
+        int count = 0;
+        CLinkedList *temp = head;
+        while (temp) {
+            temp = temp->next;
+            ++count;
+        }
+        return count;
     }
 
-    T getValue() { return value; }
-
-    void PushNode(CLinkedList** head, const T& value)
+    void PushNode(CLinkedList **head, const T &value)
     {
-        CLinkedList* new_node = new CLinkedList(value);
+        CLinkedList *new_node = new CLinkedList(value);
         new_node->next = *head;
         *head = new_node;
         return;
     }
 
-    void PushBackNode(CLinkedList* head, const T& value)
+    void PushBackNode(CLinkedList *head, const T &value)
     {
-        CLinkedList* new_node = new CLinkedList(value);
-        CLinkedList* temp = head;
+        CLinkedList *new_node = new CLinkedList(value);
+        CLinkedList *temp = head;
         while (temp->next)
             temp = temp->next;
             
@@ -43,26 +49,40 @@ public:
         return; 
     }
 
-    void RemoveNode(CLinkedList **head, const T& value) {
+    CLinkedList* GetNodeAtIndex(CLinkedList *head, int index)
+    {
+        CLinkedList *temp = head;
+        int count = 0;
+        if (GetListLength(head) <= index)
+        {
+            return nullptr;
+        }
+        while (temp->next && index != count++)
+        {
+            temp = temp->next;
+        }
+        return temp;
+    }
+
+    void RemoveNode(CLinkedList **head, const T &value) {
         CLinkedList *node = FindNode(*head, value);
         if (node == nullptr) { return; }
-        // When node to be deleted is head node 
+        // if node to be deleted is head 
         if (*head == node)
         {
             if ((*head)->next == nullptr)
             {
                 cout << "There is only one node. Can't delete the list.\n";
-                //Clear();
                 return;
             }
 
-            /* Copy the value of next node to head */
+            // copy the value of next node to head
             (*head)->value = (*head)->next->value;
 
             // store address of next node 
             node = (*head)->next;
 
-            // Remove the link of next node 
+            // remove the link of next node 
             (*head)->next = (*head)->next->next;
 
             // free memory 
@@ -71,23 +91,23 @@ public:
 
             return;
         }
-        // When not first node, follow the normal deletion process 
+        // if not first node, follow the normal deletion process 
         // find the previous node 
         CLinkedList *prev = *head;
         while (prev->next && prev->next != node)
             prev = prev->next;
 
-        // Check if node really exists in Linked List 
+        // check if node really exists in list 
         if (prev->next == nullptr)
         {
-            cout << "Given node is not present in Linked List\n";
+            cout << "The node is not present in Linked List\n";
             return;
         }
 
-        // Remove node from Linked List 
+        // remove node from list 
         prev->next = prev->next->next;
 
-        // Free memory 
+        // free memory 
         delete node;
         node = nullptr;
         return;
@@ -97,20 +117,20 @@ public:
     {
         // Initialize current, previous and
         // next pointers
-        CLinkedList *current = *head;
+        CLinkedList *curr = *head;
         CLinkedList *prev = nullptr, *next = nullptr;
 
-        while (current != nullptr)
+        while (curr != nullptr)
         {
             // Store next
-            next = current->next;
+            next = curr->next;
 
             // Reverse current node's pointer
-            current->next = prev;
+            curr->next = prev;
 
             // Move pointers one position ahead.
-            prev = current;
-            current = next;
+            prev = curr;
+            curr = next;
         }
         *head = prev;
     }
@@ -140,7 +160,8 @@ public:
     }
 
 private:
-    CLinkedList *FindNode(CLinkedList *head, const T& value)
+
+    CLinkedList *FindNode(CLinkedList *head, const T &value)
     {
         CLinkedList *temp = head;
         while (temp != nullptr)
@@ -152,7 +173,6 @@ private:
         }
         return nullptr;
     }
-
 
 };
 
