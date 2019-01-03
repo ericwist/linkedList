@@ -198,7 +198,7 @@ public:
         *head = nullptr;
     }
 
-    int GetPrevNodeValue(CLinkedList *head, int value)
+    T GetPrevNodeValue(CLinkedList *head, int value)
     {
         CLinkedList *node = FindNode(head, value);
         if (head == node)
