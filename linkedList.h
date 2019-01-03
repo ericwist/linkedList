@@ -177,7 +177,7 @@ public:
     void Print(CLinkedList *head)
     {
         CLinkedList *temp = head;
-        while (temp != nullptr)
+        while (temp)
         {
             cout << temp->value << " ";
             temp = temp->next;
@@ -188,7 +188,7 @@ public:
     void Clear(CLinkedList **head)
     {
         CLinkedList *temp = *head;
-        while (temp != nullptr)
+        while (temp)
         {
             CLinkedList *pe = temp;
             temp = temp->next;
@@ -198,12 +198,38 @@ public:
         *head = nullptr;
     }
 
-private:
+    int GetPrevNodeValue(CLinkedList *head, int value)
+    {
+        CLinkedList *node = FindNode(head, value);
+        if (head == node)
+        {
+            return -1;
+        }
+        CLinkedList *temp = GetPrevNode(head, node);
+        return temp->value;
+    }
+
+    CLinkedList *GetPrevNode(CLinkedList *head, CLinkedList *node)
+    {
+        if (head == node)
+        {
+            return nullptr;
+        }
+        CLinkedList * temp;
+        for (temp = head; temp; temp = temp->next)
+        {
+            if (temp->next == node)
+            {
+                return temp;
+            }
+        }
+        return nullptr;
+    }
 
     CLinkedList *FindNode(CLinkedList *head, const T &value)
     {
         CLinkedList *temp = head;
-        while (temp != nullptr)
+        while (temp)
         {
             if (temp->value == value) {
                 return temp;
