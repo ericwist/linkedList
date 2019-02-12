@@ -9,7 +9,8 @@
 
 using namespace std;
 
-template<typename T> class CLinkedList
+template<typename T>
+class CLinkedList
 {
 public:
     CLinkedList *next;
@@ -215,7 +216,7 @@ public:
         {
             return nullptr;
         }
-        CLinkedList * temp;
+        CLinkedList *temp;
         for (temp = head; temp; temp = temp->next)
         {
             if (temp->next == node)
